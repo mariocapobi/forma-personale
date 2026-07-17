@@ -7,7 +7,8 @@ Questa è una prima versione funzionante e gratuita dell’app personale. Includ
 - piano alimentare iniziale per ricomposizione corporea;
 - sostituzione degli alimenti con alternative della stessa funzione nel pasto;
 - apprendimento locale di gusti, rifiuti e sostituzioni;
-- inserimento manuale o importazione JSON dei dati sanitari;
+- sincronizzazione automatica dei dati sanitari tramite Comandi Rapidi e Cloudflare;
+- inserimento manuale o importazione JSON come alternative;
 - funzionamento offline dopo il primo caricamento.
 
 ## Come provarla
@@ -21,7 +22,7 @@ Una volta pubblicata:
 3. scegli **Aggiungi alla schermata Home**;
 4. apri **Forma** dalla nuova icona.
 
-Tutti i dati personali e le preferenze vengono conservati nel browser dell’iPhone. Non sono presenti account, pubblicità, analytics o servizi esterni.
+Profilo, preferenze e storico vengono conservati nel browser dell’iPhone. Non sono presenti account, pubblicità o analytics. Per la sincronizzazione, soltanto l’ultimo pacchetto transita cifrato tramite Cloudflare, protetto da una chiave privata e cancellato dopo l’importazione o entro sette giorni.
 
 ## Alimentazione
 
@@ -33,6 +34,7 @@ La parte dedicata a frutta e verdura usa un’esposizione graduale: una piccola 
 
 La PWA non può leggere direttamente HealthKit. La sezione **Dati** accetta:
 
+- sincronizzazione automatica dal Comando Rapido;
 - inserimento manuale;
 - un file JSON con lo schema di `forma-health-esempio.json` creato da Comandi Rapidi.
 
@@ -43,4 +45,3 @@ Consulta [GUIDA-COMANDO-RAPIDO.md](GUIDA-COMANDO-RAPIDO.md) per la configurazion
 - [OMS — Healthy diet](https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet)
 - [CREA — Linee guida per una sana alimentazione](https://www.crea.gov.it/en/web/alimenti-e-nutrizione/-/linee-guida-per-una-sana-alimentazione-2018)
 - [Australian Institute of Sport — Protein](https://www.ausport.gov.au/ais/nutrition/supplements/group_a/sports-foods2/isolated-protein-supplement2/what-is-it)
-

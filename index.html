@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <title>Forma</title>
 </head>
 <body>
@@ -208,7 +208,28 @@
         </div>
         <span class="status-pill" id="data-mode-pill">Demo</span>
       </div>
-      <p class="lead">Puoi inserire i valori a mano oppure importare il file JSON creato dal Comando Rapido.</p>
+      <p class="lead">Puoi ricevere i dati automaticamente dal Comando Rapido, inserirli a mano oppure importare un file JSON.</p>
+
+      <article class="cloud-sync-card" aria-labelledby="cloud-sync-title">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Comandi Rapidi → Forma</p>
+            <h2 id="cloud-sync-title">Sincronizzazione automatica</h2>
+          </div>
+          <span class="status-pill" id="cloud-sync-status">Da collegare</span>
+        </div>
+        <p id="cloud-sync-description">Inserisci una sola volta la chiave privata: Forma controllerà i nuovi dati quando apri l’app.</p>
+        <label class="sync-key-label" for="sync-token">Chiave privata
+          <input id="sync-token" type="password" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Incolla qui la chiave di 64 caratteri">
+        </label>
+        <div class="button-row">
+          <button class="button button-primary" id="save-sync-token" type="button">Salva collegamento</button>
+          <button class="button button-secondary" id="sync-now" type="button">Sincronizza ora</button>
+          <button class="text-button danger-text" id="forget-sync-token" type="button">Dimentica chiave</button>
+        </div>
+        <p class="form-message" id="sync-message" role="status"></p>
+        <p class="privacy-note">La chiave resta solo su questo dispositivo. L’ultimo pacchetto passa cifrato tramite Cloudflare, viene eliminato dopo l’importazione e scade comunque entro 7 giorni.</p>
+      </article>
 
       <form class="health-form" id="health-form">
         <div class="form-grid">
@@ -254,13 +275,11 @@
       </form>
 
       <details class="shortcut-guide">
-        <summary>Come preparare il Comando Rapido</summary>
+        <summary>Alternative manuali e file JSON</summary>
         <ol>
-          <li>Apri Comandi Rapidi sull’iPhone e crea “Esporta dati Forma”.</li>
-          <li>Usa “Trova campioni sanitari” per sonno, HRV, frequenza a riposo, energia attiva e peso.</li>
-          <li>Costruisci un dizionario con i nomi mostrati nel modello JSON incluso.</li>
-          <li>Salva il dizionario come file <strong>forma-health.json</strong> in iCloud Drive.</li>
-          <li>Qui scegli “Importa JSON”. Nessun dato viene inviato online.</li>
+          <li>Puoi sempre compilare i valori qui sopra e salvarli.</li>
+          <li>In alternativa, crea il dizionario con i nomi mostrati nel modello incluso.</li>
+          <li>Salvalo come <strong>forma-health.json</strong> e scegli “Importa JSON”.</li>
         </ol>
         <a class="text-link" href="forma-health-esempio.json" download>Scarica il modello JSON</a>
       </details>
@@ -392,6 +411,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=5" defer></script>
 </body>
 </html>

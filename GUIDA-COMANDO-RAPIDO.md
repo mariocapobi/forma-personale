@@ -1,19 +1,10 @@
-# Collegare i dati Salute con Comandi Rapidi
+# Collegare Salute a Forma con Comandi Rapidi
 
-La prima versione usa un passaggio semplice e privato: Comandi Rapidi prepara un file JSON in iCloud Drive e Forma lo importa. Il file resta sotto il tuo controllo.
-
-## Prima prova
-
-Per verificare subito il funzionamento:
-
-1. apri Forma e vai in **Dati**;
-2. seleziona **Importa JSON**;
-3. scegli `forma-health-esempio.json`;
-4. controlla che il punteggio di recupero e l’allenamento cambino.
+Forma non può interrogare direttamente HealthKit perché è una PWA. Il Comando Rapido legge i dati autorizzati sull’iPhone e invia soltanto l’ultimo pacchetto a un piccolo servizio Cloudflare protetto da una chiave privata. Forma lo importa quando viene aperta e lo elimina subito; una copia non letta scade comunque entro sette giorni.
 
 ## Dizionario richiesto
 
-Il Comando Rapido deve produrre un dizionario con questi nomi esatti:
+Il Comando Rapido già creato può continuare a usare questi nomi:
 
 ```json
 {
@@ -27,28 +18,34 @@ Il Comando Rapido deve produrre un dizionario con questi nomi esatti:
   "energy": 7,
   "soreness": 3,
   "activeEnergy": 680,
-  "weight": 82
+  "weight": 90
 }
 ```
 
-Le medie di sonno, HRV e frequenza a riposo dovrebbero riferirsi indicativamente agli ultimi 21–28 giorni. All’inizio puoi copiarle dall’app Salute e aggiornarle ogni settimana.
+Le medie di sonno, HRV e frequenza a riposo possono riferirsi agli ultimi 21–28 giorni. Energia percepita e indolenzimento rimangono un check-in da 1 a 10.
 
-## Struttura del Comando Rapido
+## Modifica finale del Comando Rapido
 
-1. Crea un nuovo comando chiamato **Esporta dati Forma**.
-2. Aggiungi le azioni **Trova campioni sanitari** per recuperare l’ultimo valore disponibile di:
-   - variabilità della frequenza cardiaca;
-   - frequenza cardiaca a riposo;
-   - peso;
-   - energia attiva della giornata.
-3. Per il sonno usa il totale della notte appena conclusa mostrato in Salute. La gestione automatica delle diverse fasi del sonno richiede attenzione per evitare di sommare campioni sovrapposti; nella prima versione è più affidabile inserirlo manualmente.
-4. Aggiungi due richieste numeriche rapide per **energia percepita** e **indolenzimento**, entrambe da 1 a 10.
-5. Crea un’azione **Dizionario** usando i nomi dello schema precedente.
-6. Converti il dizionario in JSON e salvalo come `forma-health.json` in una cartella di iCloud Drive, sostituendo il file precedente.
-7. In Forma, apri **Dati → Importa JSON** e scegli il file.
+1. Dopo l’azione **Dizionario**, mantieni l’azione che lo converte in JSON.
+2. Aggiungi **Ottieni contenuto dell’URL**.
+3. Usa questo indirizzo: `https://forma-salute-sync.gemini-mario-io.workers.dev/sync`.
+4. Imposta il metodo su **POST**.
+5. Aggiungi l’intestazione `Authorization` con valore `Bearer CHIAVE_PRIVATA`, sostituendo `CHIAVE_PRIVATA` con la chiave ricevuta.
+6. Aggiungi l’intestazione `Content-Type` con valore `application/json`.
+7. Come corpo della richiesta scegli **File** e inserisci il risultato JSON del dizionario.
+8. Alla prima esecuzione autorizza l’accesso ai dati Salute e alla rete.
 
-I nomi delle azioni possono cambiare leggermente in base alla versione e alla lingua di iOS. Comandi Rapidi chiederà l’autorizzazione prima di leggere dati sanitari.
+I nomi delle azioni possono cambiare leggermente in base alla versione e alla lingua di iOS.
 
-## Limite della soluzione gratuita
+## Esecuzione automatica
 
-Safari non consente a una PWA di interrogare direttamente HealthKit. Per questo l’importazione richiede un gesto dell’utente. La lettura completamente automatica in background richiederebbe una vera app iOS firmata.
+1. In **Comandi Rapidi → Automazione**, crea un’automazione personale.
+2. Scegli un orario successivo al risveglio, per esempio le 08:30.
+3. Fai eseguire **Esporta dati Forma**.
+4. Se disponibile, scegli **Esegui immediatamente** e disattiva la richiesta di conferma.
+
+Il Comando Rapido aggiorna il pacchetto anche quando Forma è chiusa; Forma lo legge al successivo avvio o quando torna in primo piano.
+
+## Alternativa senza passaggio online
+
+Il vecchio metodo resta disponibile: salva il JSON in iCloud Drive e usa **Dati → Importa JSON**. In questo caso il trasferimento non è automatico.

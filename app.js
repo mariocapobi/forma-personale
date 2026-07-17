@@ -2,6 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "forma-personale-v1";
+  const SYNC_ENDPOINT = "https://forma-salute-sync.gemini-mario-io.workers.dev/sync";
   const routes = ["oggi", "allenamento", "alimentazione", "preferenze", "dati"];
   const dayNames = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
   const shortDayNames = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
@@ -236,6 +237,11 @@
       weight: null,
       source: "demo"
     },
+    sync: {
+      token: "",
+      lastCheckedAt: null,
+      lastImportedAt: null
+    },
     healthHistory: [],
     preferenceScores: {
       passata: 0.5,
@@ -263,6 +269,7 @@
   let workoutTargetDay = null;
   let activityTargetDay = null;
   let toastTimer = null;
+  let syncInFlight = false;
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -288,6 +295,7 @@
         ...stored,
         profile: { ...fallback.profile, ...(stored.profile || {}) },
         health: { ...fallback.health, ...(stored.health || {}) },
+        sync: { ...fallback.sync, ...(stored.sync || {}) },
         preferenceScores: { ...fallback.preferenceScores, ...(stored.preferenceScores || {}) },
         weeklyMeals,
         healthHistory: Array.isArray(stored.healthHistory) ? stored.healthHistory : [],
@@ -594,7 +602,13 @@
     const syncButton = document.getElementById("quick-sync");
     syncButton.classList.toggle("has-data", !sourceIsDemo);
     document.getElementById("sync-label").textContent = sourceIsDemo ? "Dati demo" : `Aggiornato ${formatShortDate(h.date)}`;
-    document.getElementById("data-mode-pill").textContent = sourceIsDemo ? "Demo" : h.source === "shortcut" ? "Importato" : "Manuale";
+    document.getElementById("data-mode-pill").textContent = sourceIsDemo
+      ? "Demo"
+      : h.source === "cloud"
+        ? "Automatico"
+        : h.source === "shortcut"
+          ? "Importato"
+          : "Manuale";
 
     const profileWeight = Number(state.profile.weight);
     const proteinTarget = Number.isFinite(profileWeight) && profileWeight > 0 ? roundToFive(profileWeight * 1.6) : "—";
@@ -1055,7 +1069,13 @@
       soreness: Number(input.soreness ?? 4),
       activeEnergy: Number(input.activeEnergy ?? 0),
       weight: Number(input.weight),
-      source: input.source === "shortcut" ? "shortcut" : input.source === "manual" ? "manual" : "shortcut"
+      source: input.source === "cloud"
+        ? "cloud"
+        : input.source === "shortcut"
+          ? "shortcut"
+          : input.source === "manual"
+            ? "manual"
+            : "shortcut"
     };
     if (required.some((key) => !Number.isFinite(normalized[key]))) throw new Error("Il file non contiene tutti i valori numerici richiesti.");
     if (normalized.sleepHours < 0 || normalized.sleepHours > 14) throw new Error("Le ore di sonno non sono valide.");
@@ -1075,6 +1095,114 @@
     state.healthHistory = state.healthHistory.slice(-60);
     saveState();
     renderAll();
+  }
+
+  function formatSyncTime(isoString) {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    if (Number.isNaN(date.getTime())) return "";
+    return new Intl.DateTimeFormat("it-IT", {
+      day: "numeric",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+  }
+
+  function renderSyncSettings() {
+    const configured = Boolean(state.sync.token);
+    const status = document.getElementById("cloud-sync-status");
+    const description = document.getElementById("cloud-sync-description");
+    const tokenInput = document.getElementById("sync-token");
+    const syncButton = document.getElementById("sync-now");
+    const forgetButton = document.getElementById("forget-sync-token");
+    if (!status || !description || !tokenInput || !syncButton || !forgetButton) return;
+
+    status.textContent = syncInFlight
+      ? "Controllo…"
+      : !configured
+        ? "Da collegare"
+        : state.sync.lastImportedAt
+          ? "Attivo"
+          : "Collegato";
+    description.textContent = !configured
+      ? "Inserisci una sola volta la chiave privata: Forma controllerà i nuovi dati quando apri l’app."
+      : state.sync.lastImportedAt
+        ? `Ultimo import automatico: ${formatSyncTime(state.sync.lastImportedAt)}.`
+        : state.sync.lastCheckedAt
+          ? `Collegamento verificato: ${formatSyncTime(state.sync.lastCheckedAt)}. In attesa di nuovi dati.`
+          : "Chiave salvata su questo dispositivo. Il controllo automatico è attivo.";
+    tokenInput.placeholder = configured ? "Chiave già salvata — inseriscine una nuova per cambiarla" : "Incolla qui la chiave di 64 caratteri";
+    syncButton.disabled = !configured || syncInFlight;
+    forgetButton.disabled = !configured || syncInFlight;
+    document.getElementById("save-sync-token").disabled = syncInFlight;
+  }
+
+  function setSyncMessage(message) {
+    const element = document.getElementById("sync-message");
+    if (element) element.textContent = message;
+  }
+
+  async function syncHealthFromCloud({ silent = false } = {}) {
+    if (!state.sync.token) {
+      navigate("dati");
+      setSyncMessage("Inserisci prima la chiave privata.");
+      document.getElementById("sync-token")?.focus();
+      return false;
+    }
+    if (syncInFlight) return false;
+
+    syncInFlight = true;
+    renderSyncSettings();
+    const headers = { Authorization: `Bearer ${state.sync.token}` };
+
+    try {
+      const response = await fetch(SYNC_ENDPOINT, { method: "GET", headers, cache: "no-store" });
+      state.sync.lastCheckedAt = new Date().toISOString();
+      saveState();
+
+      if (response.status === 404) {
+        if (!silent) setSyncMessage("Collegamento attivo. Non ci sono ancora nuovi dati da importare.");
+        return false;
+      }
+      if (response.status === 401) throw new Error("La chiave privata non è corretta.");
+      if (!response.ok) throw new Error("Il servizio non è disponibile in questo momento.");
+
+      const payload = await response.json();
+      if (!payload?.data || typeof payload.data !== "object") throw new Error("Il pacchetto ricevuto non è valido.");
+      const health = normalizeHealth({
+        ...state.health,
+        ...payload.data,
+        date: payload.data.date || dateKey(),
+        source: "cloud"
+      });
+      storeHealth(health);
+
+      const deleted = await fetch(SYNC_ENDPOINT, { method: "DELETE", headers, cache: "no-store" });
+      state.sync.lastImportedAt = new Date().toISOString();
+      saveState();
+      renderAll();
+
+      const message = deleted.ok
+        ? `Dati importati automaticamente: ${formatShortDate(health.date)}.`
+        : `Dati importati: ${formatShortDate(health.date)}. La copia temporanea scadrà automaticamente.`;
+      setSyncMessage(message);
+      if (!silent) showToast("Nuovi dati Salute importati e piano aggiornato.");
+      return true;
+    } catch (error) {
+      setSyncMessage(`Sincronizzazione non riuscita: ${error.message}`);
+      if (!silent) showToast("Non sono riuscito a sincronizzare i dati.");
+      return false;
+    } finally {
+      syncInFlight = false;
+      renderSyncSettings();
+    }
+  }
+
+  function syncCheckIsDue() {
+    if (!state.sync.token || !state.sync.lastCheckedAt) return Boolean(state.sync.token);
+    const checkedAt = new Date(state.sync.lastCheckedAt).getTime();
+    return !Number.isFinite(checkedAt) || Date.now() - checkedAt > 5 * 60 * 1000;
   }
 
   function formatDecimal(value) {
@@ -1100,6 +1228,7 @@
     renderMeals();
     renderPreferences();
     renderHealthForm();
+    renderSyncSettings();
     renderPlantOptions();
   }
 
@@ -1207,6 +1336,58 @@
     document.getElementById("subjective-energy").addEventListener("input", updateRangeOutputs);
     document.getElementById("soreness").addEventListener("input", updateRangeOutputs);
 
+    document.getElementById("quick-sync").addEventListener("click", () => {
+      if (!state.sync.token) {
+        navigate("dati");
+        setSyncMessage("Inserisci la chiave privata per attivare il collegamento automatico.");
+        setTimeout(() => document.getElementById("sync-token")?.focus(), 0);
+        return;
+      }
+      syncHealthFromCloud();
+    });
+
+    document.getElementById("save-sync-token").addEventListener("click", async () => {
+      const input = document.getElementById("sync-token");
+      const token = input.value.trim().toLowerCase();
+      if (!token && state.sync.token) {
+        setSyncMessage("La chiave è già salvata su questo dispositivo.");
+        return;
+      }
+      if (!/^[a-f0-9]{64}$/.test(token)) {
+        setSyncMessage("La chiave deve contenere esattamente 64 lettere e numeri.");
+        input.focus();
+        return;
+      }
+      state.sync.token = token;
+      state.sync.lastCheckedAt = null;
+      state.sync.lastImportedAt = null;
+      saveState();
+      input.value = "";
+      renderSyncSettings();
+      setSyncMessage("Chiave salvata. Controllo subito il collegamento…");
+      await syncHealthFromCloud();
+    });
+
+    document.getElementById("sync-now").addEventListener("click", () => syncHealthFromCloud());
+
+    document.getElementById("forget-sync-token").addEventListener("click", async () => {
+      if (!state.sync.token || !window.confirm("Vuoi rimuovere la chiave da questo dispositivo?")) return;
+      const oldToken = state.sync.token;
+      state.sync = clone(defaultState.sync);
+      saveState();
+      renderSyncSettings();
+      setSyncMessage("Chiave rimossa. La sincronizzazione automatica è disattivata.");
+      try {
+        await fetch(SYNC_ENDPOINT, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${oldToken}` },
+          cache: "no-store"
+        });
+      } catch (error) {
+        // La copia temporanea scade comunque entro sette giorni.
+      }
+    });
+
     document.getElementById("setup-form").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
@@ -1264,6 +1445,9 @@
     });
 
     window.addEventListener("hashchange", () => navigate(location.hash.slice(1), false));
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && syncCheckIsDue()) syncHealthFromCloud({ silent: true });
+    });
   }
 
   function init() {
@@ -1277,6 +1461,7 @@
     if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
       navigator.serviceWorker.register("sw.js").catch(() => {});
     }
+    if (syncCheckIsDue()) syncHealthFromCloud({ silent: true });
   }
 
   document.addEventListener("DOMContentLoaded", init);
