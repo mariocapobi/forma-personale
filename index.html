@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12372a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Forma">
+  <meta name="description" content="Piano personale adattivo per allenamento, recupero e alimentazione.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <title>Forma</title>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Vai al contenuto</a>
+  <header class="app-header">
+    <a class="brand" href="#oggi" data-route-link="oggi" aria-label="Forma, pagina Oggi">
+      <span class="brand-mark" aria-hidden="true">F</span>
+      <span>Forma</span>
+    </a>
+    <button class="sync-button" id="quick-sync" type="button">
+      <span class="sync-dot" aria-hidden="true"></span>
+      <span id="sync-label">Dati demo</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <section class="view is-active" id="view-oggi" data-view="oggi" aria-labelledby="oggi-title">
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow" id="today-date"></p>
+          <h1 id="oggi-title">Il tuo giorno</h1>
+        </div>
+        <span class="status-pill" id="readiness-status">Moderato</span>
+      </div>
+
+      <article class="readiness-card">
+        <div class="score-ring" id="score-ring" style="--score:72" role="img" aria-label="Recupero 72 su 100">
+          <strong id="readiness-score">72</strong>
+          <span>/100</span>
+        </div>
+        <div class="readiness-copy">
+          <p class="eyebrow">Recupero</p>
+          <h2 id="readiness-title">Allenati, ma senza forzare</h2>
+          <p id="readiness-explanation">Il sonno è leggermente sotto la tua media: mantieni qualità e tecnica.</p>
+          <button class="text-button" type="button" data-route-link="dati">Aggiorna i dati</button>
+        </div>
+      </article>
+
+      <div class="metric-grid" aria-label="Indicatori del giorno">
+        <article class="metric-card">
+          <span>Sonno</span>
+          <strong id="metric-sleep">6 h 50</strong>
+          <small id="metric-sleep-note">media 7 h 30</small>
+        </article>
+        <article class="metric-card">
+          <span>HRV</span>
+          <strong id="metric-hrv">52 ms</strong>
+          <small id="metric-hrv-note">nella tua norma</small>
+        </article>
+        <article class="metric-card">
+          <span>Energia</span>
+          <strong id="metric-energy">7/10</strong>
+          <small id="metric-energy-note">check-in manuale</small>
+        </article>
+      </div>
+
+      <article class="action-card workout-highlight">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Allenamento consigliato</p>
+            <h2 id="today-workout-title">Palestra C · volume ridotto</h2>
+          </div>
+          <span class="tag" id="today-workout-effort">RPE 6</span>
+        </div>
+        <p id="today-workout-summary">Una serie in meno per esercizio, senza arrivare al cedimento.</p>
+        <div class="button-row">
+          <button class="button button-primary" type="button" data-route-link="allenamento">Apri allenamento</button>
+          <button class="button button-secondary" id="today-downgrade" type="button">Oggi preferisco leggero</button>
+        </div>
+      </article>
+
+      <article class="action-card nutrition-highlight">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Alimentazione</p>
+            <h2>Ricomposizione, senza tagli aggressivi</h2>
+          </div>
+          <span class="tag"><span id="protein-target-compact">—</span> g proteine</span>
+        </div>
+        <p id="nutrition-summary">Le porzioni energetiche verranno calibrate usando peso, attività e andamento di 14 giorni.</p>
+        <button class="button button-secondary" type="button" data-route-link="alimentazione">Vedi il piano e cambia gli alimenti</button>
+      </article>
+    </section>
+
+    <section class="view" id="view-allenamento" data-view="allenamento" aria-labelledby="allenamento-title" hidden>
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow">Settimane 1–2 di 6</p>
+          <h1 id="allenamento-title">Rientro graduale</h1>
+        </div>
+        <span class="status-pill" id="gym-limit-pill">Palestra adattiva</span>
+      </div>
+      <p class="lead">La disponibilità quotidiana non diventa un obbligo: il programma protegge il recupero.</p>
+
+      <div class="week-strip" id="week-strip" role="list" aria-label="Piano della settimana"></div>
+
+      <article class="action-card" id="workout-detail" aria-live="polite">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow" id="workout-day-label"></p>
+            <h2 id="workout-detail-title"></h2>
+          </div>
+          <span class="tag" id="workout-detail-effort"></span>
+        </div>
+        <p id="workout-adaptation"></p>
+        <div class="exercise-list" id="exercise-list"></div>
+        <div class="button-row">
+          <button class="button button-primary" id="complete-workout" type="button">Segna come completato</button>
+          <button class="button button-secondary" id="make-easier" type="button">Rendi più facile</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="view" id="view-alimentazione" data-view="alimentazione" aria-labelledby="alimentazione-title" hidden>
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow">Obiettivo: perdere grasso e recuperare muscolo</p>
+          <h1 id="alimentazione-title">Piano alimentare flessibile</h1>
+        </div>
+        <span class="status-pill">In calibrazione</span>
+      </div>
+
+      <div class="nutrition-targets">
+        <article class="metric-card">
+          <span>Piano di partenza</span>
+          <strong id="plan-calories">— kcal</strong>
+          <small>stima, non prescrizione</small>
+        </article>
+        <article class="metric-card">
+          <span>Proteine</span>
+          <strong><span id="protein-target">—</span> g</strong>
+          <small>distribuite nella giornata</small>
+        </article>
+        <article class="metric-card">
+          <span>Vegetali</span>
+          <strong id="plant-step-label">1 prova</strong>
+          <small>graduale, senza forzature</small>
+        </article>
+      </div>
+
+      <article class="plant-step">
+        <div>
+          <p class="eyebrow">Passo di questa settimana</p>
+          <h2>Troviamo una forma di frutta o verdura che tolleri</h2>
+          <p>Partiamo da una piccola quantità e dal formato che preferisci: crudo, cotto, frullato intero o dentro una salsa. Non viene considerato equivalente a eliminarla del tutto.</p>
+        </div>
+        <button class="button button-secondary" id="open-plant-lab" type="button">Scegli una prova</button>
+      </article>
+
+      <div class="meal-plan" id="meal-plan" aria-live="polite"></div>
+
+      <p class="safety-note">Questo è un supporto generale per una persona sana, non una dieta clinica. Se compaiono stanchezza persistente, calo marcato della prestazione, disturbi alimentari o problemi gastrointestinali, serve un professionista sanitario.</p>
+    </section>
+
+    <section class="view" id="view-preferenze" data-view="preferenze" aria-labelledby="preferenze-title" hidden>
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow">Apprendimento locale</p>
+          <h1 id="preferenze-title">I tuoi gusti</h1>
+        </div>
+        <button class="button button-secondary button-small" id="reset-preferences" type="button">Azzera gusti</button>
+      </div>
+      <p class="lead">Ogni “mi piace”, rifiuto o sostituzione modifica l’ordine delle proposte. I dati restano in questo browser.</p>
+      <div class="preference-summary" id="preference-summary"></div>
+      <div class="preference-list" id="preference-list"></div>
+    </section>
+
+    <section class="view" id="view-dati" data-view="dati" aria-labelledby="dati-title" hidden>
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow">Apple Health, senza app a pagamento</p>
+          <h1 id="dati-title">Aggiorna i dati</h1>
+        </div>
+        <span class="status-pill" id="data-mode-pill">Demo</span>
+      </div>
+      <p class="lead">Puoi inserire i valori a mano oppure importare il file JSON creato dal Comando Rapido.</p>
+
+      <form class="health-form" id="health-form">
+        <div class="form-grid">
+          <label>Ore di sonno
+            <input id="sleep-hours" name="sleepHours" type="number" min="0" max="14" step="0.1" required>
+          </label>
+          <label>Media sonno
+            <input id="sleep-baseline" name="sleepBaseline" type="number" min="1" max="14" step="0.1" required>
+          </label>
+          <label>HRV (ms)
+            <input id="hrv" name="hrv" type="number" min="1" max="300" step="1" required>
+          </label>
+          <label>Media HRV (ms)
+            <input id="hrv-baseline" name="hrvBaseline" type="number" min="1" max="300" step="1" required>
+          </label>
+          <label>FC a riposo
+            <input id="resting-hr" name="restingHR" type="number" min="30" max="150" step="1" required>
+          </label>
+          <label>Media FC riposo
+            <input id="resting-hr-baseline" name="restingHRBaseline" type="number" min="30" max="150" step="1" required>
+          </label>
+          <label>Energia percepita
+            <input id="subjective-energy" name="energy" type="range" min="1" max="10" step="1">
+            <output id="energy-output" for="subjective-energy">7/10</output>
+          </label>
+          <label>Indolenzimento
+            <input id="soreness" name="soreness" type="range" min="1" max="10" step="1">
+            <output id="soreness-output" for="soreness">4/10</output>
+          </label>
+          <label>Peso attuale (kg)
+            <input id="current-weight" name="weight" type="number" min="30" max="250" step="0.1" required>
+          </label>
+          <label>Energia attiva (kcal)
+            <input id="active-energy" name="activeEnergy" type="number" min="0" max="5000" step="1">
+          </label>
+        </div>
+        <div class="button-row">
+          <button class="button button-primary" type="submit">Salva e adatta il piano</button>
+          <label class="button button-secondary file-button" for="health-file">Importa JSON</label>
+          <input id="health-file" class="visually-hidden" type="file" accept="application/json,.json">
+        </div>
+        <p class="form-message" id="health-message" role="status"></p>
+      </form>
+
+      <details class="shortcut-guide">
+        <summary>Come preparare il Comando Rapido</summary>
+        <ol>
+          <li>Apri Comandi Rapidi sull’iPhone e crea “Esporta dati Forma”.</li>
+          <li>Usa “Trova campioni sanitari” per sonno, HRV, frequenza a riposo, energia attiva e peso.</li>
+          <li>Costruisci un dizionario con i nomi mostrati nel modello JSON incluso.</li>
+          <li>Salva il dizionario come file <strong>forma-health.json</strong> in iCloud Drive.</li>
+          <li>Qui scegli “Importa JSON”. Nessun dato viene inviato online.</li>
+        </ol>
+        <a class="text-link" href="forma-health-esempio.json" download>Scarica il modello JSON</a>
+      </details>
+
+      <details class="sources">
+        <summary>Fonti e criteri</summary>
+        <ul>
+          <li><a href="https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noreferrer">OMS: alimentazione sana, varietà, fibra, frutta e verdura</a></li>
+          <li><a href="https://www.crea.gov.it/en/web/alimenti-e-nutrizione/-/linee-guida-per-una-sana-alimentazione-2018" target="_blank" rel="noreferrer">CREA: Linee guida italiane per una sana alimentazione</a></li>
+          <li><a href="https://www.ausport.gov.au/ais/nutrition/supplements/group_a/sports-foods2/isolated-protein-supplement2/what-is-it" target="_blank" rel="noreferrer">Australian Institute of Sport: proteine e allenamento</a></li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navigazione principale">
+    <button class="nav-item is-active" type="button" data-route-link="oggi" aria-current="page"><span aria-hidden="true">●</span><span>Oggi</span></button>
+    <button class="nav-item" type="button" data-route-link="allenamento"><span aria-hidden="true">◆</span><span>Allenamento</span></button>
+    <button class="nav-item" type="button" data-route-link="alimentazione"><span aria-hidden="true">◒</span><span>Alimenti</span></button>
+    <button class="nav-item" type="button" data-route-link="preferenze"><span aria-hidden="true">♥</span><span>Gusti</span></button>
+    <button class="nav-item" type="button" data-route-link="dati"><span aria-hidden="true">↻</span><span>Dati</span></button>
+  </nav>
+
+  <dialog class="swap-dialog setup-dialog" id="setup-dialog" aria-labelledby="setup-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Prima configurazione</p>
+        <h2 id="setup-title">Personalizza Forma</h2>
+      </div>
+    </div>
+    <p>Questi dati vengono salvati soltanto nel browser del tuo dispositivo e non sono inviati a GitHub o ad altri servizi.</p>
+    <form id="setup-form">
+      <div class="form-grid">
+        <label>Data di nascita
+          <input id="setup-birthdate" name="birthDate" type="date" required>
+        </label>
+        <label>Altezza (cm)
+          <input id="setup-height" name="height" type="number" min="130" max="230" step="1" required>
+        </label>
+        <label>Peso attuale (kg)
+          <input id="setup-weight" name="weight" type="number" min="30" max="250" step="0.1" required>
+        </label>
+        <label>Massimo sedute in palestra
+          <select id="setup-gym-max" name="gymMax" required>
+            <option value="1">1 a settimana</option>
+            <option value="2">2 a settimana</option>
+            <option value="3" selected>3 a settimana</option>
+          </select>
+        </label>
+      </div>
+      <button class="button button-primary" type="submit">Salva sul dispositivo</button>
+      <p class="form-message" id="setup-message" role="status"></p>
+    </form>
+  </dialog>
+
+  <dialog class="swap-dialog" id="swap-dialog" aria-labelledby="swap-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Stessa funzione nel pasto</p>
+        <h2 id="swap-title">Scegli un’alternativa</h2>
+      </div>
+      <button class="icon-button" id="close-swap" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <p id="swap-description"></p>
+    <div class="swap-options" id="swap-options"></div>
+  </dialog>
+
+  <dialog class="swap-dialog" id="plant-dialog" aria-labelledby="plant-dialog-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Esperimento di gusto</p>
+        <h2 id="plant-dialog-title">Da cosa vuoi partire?</h2>
+      </div>
+      <button class="icon-button" id="close-plant" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <p>Scegli solo una piccola prova. Il tuo giudizio verrà ricordato per le proposte future.</p>
+    <div class="swap-options" id="plant-options"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js?v=3" defer></script>
+</body>
+</html>

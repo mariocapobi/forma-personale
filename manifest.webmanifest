@@ -1,0 +1,26 @@
+{
+  "name": "Forma personale",
+  "short_name": "Forma",
+  "description": "Piano personale adattivo per allenamento, recupero e alimentazione.",
+  "start_url": "./index.html#oggi",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7f3",
+  "theme_color": "#12372a",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

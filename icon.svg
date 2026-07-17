@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Forma</title>
+  <rect width="512" height="512" rx="120" fill="#12372a"/>
+  <path d="M132 318c39-8 67-31 82-69 16-41 42-66 83-76 28-7 55-3 83 10" fill="none" stroke="#bfe2c9" stroke-width="36" stroke-linecap="round"/>
+  <path d="M132 380V132h198" fill="none" stroke="#fff" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M132 252h142" fill="none" stroke="#fff" stroke-width="42" stroke-linecap="round"/>
+</svg>
+
