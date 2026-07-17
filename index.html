@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
   <title>Forma</title>
 </head>
 <body>
@@ -68,6 +68,8 @@
         </article>
       </div>
 
+      <article class="activity-summary" id="today-activity-summary" hidden></article>
+
       <article class="action-card workout-highlight">
         <div class="card-heading">
           <div>
@@ -79,7 +81,9 @@
         <p id="today-workout-summary">Una serie in meno per esercizio, senza arrivare al cedimento.</p>
         <div class="button-row">
           <button class="button button-primary" type="button" data-route-link="allenamento">Apri allenamento</button>
-          <button class="button button-secondary" id="today-downgrade" type="button">Oggi preferisco leggero</button>
+          <button class="button button-secondary" id="today-change-workout" type="button">Non posso fare questo</button>
+          <button class="button button-secondary" id="today-log-activity" type="button">Ho già fatto un’attività</button>
+          <button class="button button-secondary" id="today-downgrade" type="button">Giornata leggera</button>
         </div>
       </article>
 
@@ -120,6 +124,8 @@
         <div class="exercise-list" id="exercise-list"></div>
         <div class="button-row">
           <button class="button button-primary" id="complete-workout" type="button">Segna come completato</button>
+          <button class="button button-secondary" id="change-workout" type="button">Cambia attività</button>
+          <button class="button button-secondary" id="log-activity" type="button">Registra attività fatta</button>
           <button class="button button-secondary" id="make-easier" type="button">Rendi più facile</button>
         </div>
       </article>
@@ -138,7 +144,7 @@
         <article class="metric-card">
           <span>Piano di partenza</span>
           <strong id="plan-calories">— kcal</strong>
-          <small>stima, non prescrizione</small>
+          <small>media giornaliera, stima</small>
         </article>
         <article class="metric-card">
           <span>Proteine</span>
@@ -161,7 +167,22 @@
         <button class="button button-secondary" id="open-plant-lab" type="button">Scegli una prova</button>
       </article>
 
+      <div class="meal-week-strip" id="meal-week-strip" role="list" aria-label="Giorni del piano alimentare"></div>
+      <div class="meal-day-heading">
+        <div>
+          <p class="eyebrow">Pasti del giorno</p>
+          <h2 id="meal-day-title"></h2>
+        </div>
+        <span class="tag" id="meal-day-total"></span>
+      </div>
+
       <div class="meal-plan" id="meal-plan" aria-live="polite"></div>
+
+      <details class="grocery-card" open>
+        <summary>Lista della spesa per 7 giorni</summary>
+        <p>Le quantità indicano quante porzioni del piano acquistare. Puoi cambiare gli alimenti prima della spesa e la lista si aggiornerà.</p>
+        <div class="grocery-list" id="grocery-list"></div>
+      </details>
 
       <p class="safety-note">Questo è un supporto generale per una persona sana, non una dieta clinica. Se compaiono stanchezza persistente, calo marcato della prestazione, disturbi alimentari o problemi gastrointestinali, serve un professionista sanitario.</p>
     </section>
@@ -319,8 +340,58 @@
     <div class="swap-options" id="plant-options"></div>
   </dialog>
 
+  <dialog class="swap-dialog" id="workout-choice-dialog" aria-labelledby="workout-choice-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Alternativa per la giornata</p>
+        <h2 id="workout-choice-title">Cosa puoi fare al suo posto?</h2>
+      </div>
+      <button class="icon-button" id="close-workout-choice" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <p id="workout-choice-description">Scegli un’attività compatibile con il recupero di oggi.</p>
+    <div class="swap-options" id="workout-choice-options"></div>
+    <button class="button button-secondary" id="restore-workout" type="button">Ripristina il programma originale</button>
+  </dialog>
+
+  <dialog class="swap-dialog" id="activity-dialog" aria-labelledby="activity-dialog-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Attività già svolta</p>
+        <h2 id="activity-dialog-title">Registrala nella giornata</h2>
+      </div>
+      <button class="icon-button" id="close-activity" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <p>Forma userà durata e intensità per evitare di suggerirti troppo lavoro nella stessa giornata.</p>
+    <form id="activity-form">
+      <div class="form-grid">
+        <label>Tipo di attività
+          <select name="activityType" required>
+            <option value="gym">Palestra</option>
+            <option value="bodyweight">Corpo libero</option>
+            <option value="run">Corsa</option>
+            <option value="walk">Camminata</option>
+            <option value="basket">Basket</option>
+            <option value="other">Altro sport</option>
+          </select>
+        </label>
+        <label>Durata (minuti)
+          <input name="duration" type="number" min="5" max="240" step="5" value="30" required>
+        </label>
+        <label>Intensità percepita (RPE)
+          <input id="activity-rpe" name="rpe" type="range" min="1" max="10" step="1" value="6">
+          <output id="activity-rpe-output" for="activity-rpe">6/10</output>
+        </label>
+      </div>
+      <div class="button-row">
+        <button class="button button-primary" type="submit">Registra e ricalcola</button>
+        <button class="button button-secondary" id="remove-activity" type="button">Rimuovi attività registrata</button>
+      </div>
+      <p class="form-message" id="activity-message" role="status"></p>
+    </form>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=3" defer></script>
+  <script src="app.js?v=4" defer></script>
 </body>
 </html>

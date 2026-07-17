@@ -189,10 +189,12 @@ h2 {
 .readiness-card,
 .action-card,
 .metric-card,
+.activity-summary,
 .plant-step,
 .health-form,
 .shortcut-guide,
 .sources,
+.grocery-card,
 .preference-list {
   border: 1px solid var(--line);
   background: var(--surface);
@@ -283,6 +285,23 @@ h2 {
 .metric-card small { color: var(--muted); }
 .metric-card strong { font-size: 1.22rem; }
 
+.activity-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 14px 0;
+  padding: 15px 18px;
+  border-radius: var(--radius-md);
+  background: var(--brand-soft);
+  box-shadow: none;
+}
+
+.activity-summary[hidden] { display: none; }
+.activity-summary p { margin-bottom: 2px; }
+.activity-summary strong { display: block; }
+.activity-summary span { display: block; color: var(--muted); font-size: 0.88rem; }
+
 .action-card {
   margin-top: 14px;
   padding: clamp(20px, 4vw, 28px);
@@ -314,6 +333,10 @@ h2 {
   text-decoration: none;
 }
 
+.button[hidden] {
+  display: none;
+}
+
 .button-primary {
   background: var(--brand);
   color: white;
@@ -340,6 +363,7 @@ h2 {
 .button:focus-visible,
 .nav-item:focus-visible,
 .day-button:focus-visible,
+.meal-day-button:focus-visible,
 .icon-button:focus-visible,
 input:focus-visible,
 select:focus-visible,
@@ -418,6 +442,40 @@ summary:focus-visible {
 
 .plant-step p:last-child { margin-bottom: 0; color: #665c49; }
 
+.meal-week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.meal-day-button {
+  display: grid;
+  gap: 3px;
+  min-height: 64px;
+  place-content: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+}
+
+.meal-day-button small { color: var(--muted); font-size: 0.72rem; }
+.meal-day-button.is-selected { border-color: var(--brand-2); background: var(--brand-soft); }
+
+.meal-day-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.meal-day-heading h2 { margin: 0; }
+
 .meal-plan {
   display: grid;
   gap: 16px;
@@ -481,6 +539,45 @@ summary:focus-visible {
 
 .food-action.like.is-active { background: var(--brand-soft); border-color: var(--brand-2); }
 .food-action.dislike.is-active { background: rgba(155, 50, 44, 0.07); border-color: rgba(155, 50, 44, 0.35); color: var(--danger); }
+
+.grocery-card {
+  margin-top: 18px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+
+.grocery-card > p { margin: 12px 0 16px; color: var(--muted); }
+
+.grocery-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.grocery-group {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.grocery-group h3 {
+  margin: 0;
+  padding: 11px 13px;
+  background: var(--surface-soft);
+  font-size: 0.9rem;
+}
+
+.grocery-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 10px 13px;
+  border-top: 1px solid var(--line);
+  font-size: 0.84rem;
+}
+
+.grocery-row span { color: var(--muted); text-align: right; }
 
 .safety-note {
   margin: 20px 0 0;
@@ -732,7 +829,9 @@ details li + li { margin-top: 7px; }
   .readiness-card { grid-template-columns: 1fr; }
   .score-ring { width: 112px; height: 112px; }
   .week-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meal-week-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .plant-step { grid-template-columns: 1fr; }
+  .grocery-list { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 540px) {
@@ -745,6 +844,9 @@ details li + li { margin-top: 7px; }
   .metric-card small { grid-column: 1 / -1; }
   .food-row { grid-template-columns: 1fr; }
   .food-actions { justify-content: flex-start; }
+  .meal-day-heading { align-items: flex-start; }
+  .meal-day-heading .tag { max-width: 155px; text-align: center; }
+  .activity-summary { align-items: flex-start; }
   .view-heading { align-items: flex-start; }
   .view-heading .status-pill { max-width: 135px; text-align: center; }
   .app-header { padding-right: 14px; padding-left: 14px; }

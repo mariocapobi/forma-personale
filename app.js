@@ -125,6 +125,94 @@
     }
   ];
 
+  const workoutAlternatives = [
+    {
+      id: "bodyweight", short: "Corpo libero", kind: "bodyweight", duration: "30 min", effort: "RPE 5–6",
+      exercises: [
+        ["Squat a corpo libero", "3 x 12", "Movimento controllato"],
+        ["Push-up facilitati o classici", "3 x 8–12", "Lascia due ripetizioni in riserva"],
+        ["Affondi indietro", "2 x 8", "Per lato"],
+        ["Ponte glutei + plank", "2 x 12 + 25 s", "Chiusura facile"]
+      ]
+    },
+    {
+      id: "walk", short: "Camminata veloce", kind: "cardio", duration: "35 min", effort: "RPE 4",
+      exercises: [
+        ["Partenza facile", "5 min", "Riscaldati gradualmente"],
+        ["Passo sostenuto", "25 min", "Devi riuscire a parlare"],
+        ["Rallenta", "5 min", "Chiudi senza affanno"]
+      ]
+    },
+    {
+      id: "run", short: "Corsa facile", kind: "cardio", duration: "30 min", effort: "RPE 5",
+      exercises: [
+        ["Camminata iniziale", "5 min", "Riscaldamento"],
+        ["Corsa facile", "20 min", "Ritmo conversazionale"],
+        ["Defaticamento", "5 min", "Cammina e respira"]
+      ]
+    },
+    {
+      id: "basket", short: "Basket", kind: "basket", duration: "45–60 min", effort: "RPE 6–7",
+      exercises: [
+        ["Riscaldamento dinamico", "10 min", "Caviglie, anche e cambi di direzione"],
+        ["Tiro o partitella", "30–40 min", "Regola l’intensità sulle sensazioni"],
+        ["Defaticamento", "5 min", "Cammina e respira"]
+      ]
+    },
+    {
+      id: "recovery", short: "Recupero attivo", kind: "recovery", duration: "20–30 min", effort: "RPE 2–3",
+      exercises: [
+        ["Camminata facile", "15–20 min", "Nessun obiettivo di passo"],
+        ["Mobilità generale", "8–10 min", "Movimenti senza dolore"]
+      ]
+    }
+  ];
+
+  const defaultWeeklyMeals = [
+    [
+      { id: "breakfast", name: "Colazione", slots: ["yogurt-greco", "avena", "burro-arachidi"] },
+      { id: "lunch", name: "Pranzo", slots: ["pollo", "riso", "passata", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["skyr-spuntino", "pane-spuntino"] },
+      { id: "dinner", name: "Cena", slots: ["salmone", "patate", "piselli", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["skyr", "cereali-semplici", "mandorle"] },
+      { id: "lunch", name: "Pranzo", slots: ["tacchino", "pasta", "passata", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["yogurt-spuntino", "cracker"] },
+      { id: "dinner", name: "Cena", slots: ["uova", "pane", "carote", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["fiocchi-latte", "pane-colazione", "burro-arachidi"] },
+      { id: "lunch", name: "Pranzo", slots: ["manzo-magro", "riso", "zucchine", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["bresaola", "gallette"] },
+      { id: "dinner", name: "Cena", slots: ["tonno", "patate", "piselli", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["yogurt-greco", "avena", "noci"] },
+      { id: "lunch", name: "Pranzo", slots: ["pollo", "couscous", "carote", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["skyr-spuntino", "pane-spuntino"] },
+      { id: "dinner", name: "Cena", slots: ["salmone", "pane", "passata", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["skyr", "fette-biscottate", "burro-arachidi"] },
+      { id: "lunch", name: "Pranzo", slots: ["tacchino", "riso", "passata", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["yogurt-spuntino", "cracker"] },
+      { id: "dinner", name: "Cena", slots: ["uova", "patate", "piselli", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["ricotta-magra", "cereali-semplici", "mandorle"] },
+      { id: "lunch", name: "Pranzo", slots: ["tonno", "piadina", "passata", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["bresaola", "gallette"] },
+      { id: "dinner", name: "Cena", slots: ["pollo", "riso", "zucchine", "olio"] }
+    ],
+    [
+      { id: "breakfast", name: "Colazione", slots: ["yogurt-greco", "pane-colazione", "noci"] },
+      { id: "lunch", name: "Pranzo", slots: ["manzo-magro", "patate", "carote", "olio"] },
+      { id: "snack", name: "Spuntino", slots: ["skyr-spuntino", "pane-spuntino"] },
+      { id: "dinner", name: "Cena", slots: ["salmone", "couscous", "piselli", "olio"] }
+    ]
+  ];
+
   const defaultState = {
     profile: {
       birthDate: null,
@@ -159,20 +247,21 @@
       arancia: -0.5,
       "frullato-intero": -0.5
     },
-    meals: [
-      { id: "breakfast", name: "Colazione", slots: ["yogurt-greco", "avena", "burro-arachidi"] },
-      { id: "lunch", name: "Pranzo", slots: ["pollo", "riso", "passata", "olio"] },
-      { id: "snack", name: "Spuntino", slots: ["skyr-spuntino", "pane-spuntino"] },
-      { id: "dinner", name: "Cena", slots: ["salmone", "patate", "piselli", "olio"] }
-    ],
+    weeklyMeals: defaultWeeklyMeals,
+    selectedMealDay: null,
     completedDays: {},
+    completedDates: {},
     easyDays: {},
+    workoutOverrides: {},
+    activityLog: {},
     selectedDay: 4,
     plantTrial: null
   };
 
   let state = loadState();
   let currentSwap = null;
+  let workoutTargetDay = null;
+  let activityTargetDay = null;
   let toastTimer = null;
 
   function clone(value) {
@@ -184,16 +273,29 @@
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (!stored || typeof stored !== "object") return fallback;
+      const weeklyMeals = Array.isArray(stored.weeklyMeals) && stored.weeklyMeals.length === 7
+        ? stored.weeklyMeals
+        : clone(fallback.weeklyMeals);
+      if (!Array.isArray(stored.weeklyMeals) && Array.isArray(stored.meals)) {
+        weeklyMeals[getMondayIndex()] = stored.meals;
+      }
+      const completedDates = { ...(stored.completedDates || {}) };
+      Object.entries(stored.completedDays || {}).forEach(([dayIndex, completed]) => {
+        if (completed) completedDates[weekDateKey(Number(dayIndex))] = true;
+      });
       return {
         ...fallback,
         ...stored,
         profile: { ...fallback.profile, ...(stored.profile || {}) },
         health: { ...fallback.health, ...(stored.health || {}) },
         preferenceScores: { ...fallback.preferenceScores, ...(stored.preferenceScores || {}) },
-        meals: Array.isArray(stored.meals) ? stored.meals : fallback.meals,
+        weeklyMeals,
         healthHistory: Array.isArray(stored.healthHistory) ? stored.healthHistory : [],
         completedDays: stored.completedDays || {},
-        easyDays: stored.easyDays || {}
+        completedDates,
+        easyDays: stored.easyDays || {},
+        workoutOverrides: stored.workoutOverrides || {},
+        activityLog: stored.activityLog || {}
       };
     } catch (error) {
       return fallback;
@@ -217,8 +319,36 @@
     return day === 0 ? 6 : day - 1;
   }
 
+  function localDateKey(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   function dateKey() {
-    return new Date().toISOString().slice(0, 10);
+    return localDateKey();
+  }
+
+  function weekDateKey(dayIndex) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() - getMondayIndex(date) + dayIndex);
+    return localDateKey(date);
+  }
+
+  function mealsForDay(dayIndex = state.selectedMealDay) {
+    return state.weeklyMeals[dayIndex] || state.weeklyMeals[getMondayIndex()] || [];
+  }
+
+  function parseMinutes(duration) {
+    const match = String(duration || "").match(/\d+/);
+    return match ? Number(match[0]) : 30;
+  }
+
+  function parseRpe(effort) {
+    const match = String(effort || "").match(/\d+/);
+    return match ? Number(match[0]) : 5;
   }
 
   function calculateAge(birthDate) {
@@ -316,19 +446,57 @@
     };
   }
 
+  function plannedWorkout(dayIndex) {
+    const override = state.workoutOverrides[weekDateKey(dayIndex)];
+    return override ? clone(override) : scheduledDay(dayIndex);
+  }
+
+  function applyLoggedActivity(workout, activity) {
+    if (!activity) return workout;
+    const duration = Number(activity.duration || 0);
+    const rpe = Number(activity.rpe || 1);
+    const load = duration * rpe;
+
+    if (load >= 180 || rpe >= 7 || duration >= 50) {
+      return {
+        short: "Recupero post-attività",
+        kind: "logged",
+        duration: `${duration} min fatti`,
+        effort: `RPE ${rpe}`,
+        note: `Hai già svolto ${activity.label}. L’attività conta come lavoro della giornata: evita una seconda seduta intensa.`,
+        exercises: [
+          [activity.label, `${duration} min`, "Attività registrata"],
+          ["Camminata o mobilità", "10–15 min facoltativi", "Solo per recuperare"],
+          ["Idratazione e pasto regolare", "Oggi", "Supporta il recupero"]
+        ],
+        loggedActivity: activity
+      };
+    }
+
+    const reduced = clone(workout);
+    reduced.duration = reduced.kind === "rest" ? reduced.duration : "20–30 min opzionali";
+    if (!["rest", "recovery"].includes(reduced.kind)) {
+      reduced.effort = "RPE ≤ 6";
+      reduced.exercises = reduced.exercises.map(([name, dose, cue]) => [name, reduceDose(dose), cue]);
+    }
+    reduced.note = `Hai già svolto ${activity.label} per ${duration} min a RPE ${rpe}. Se ti senti bene puoi fare la versione breve; altrimenti la giornata è già valida.`;
+    reduced.loggedActivity = activity;
+    return reduced;
+  }
+
   function adaptedWorkout(dayIndex) {
-    const base = scheduledDay(dayIndex);
+    const base = plannedWorkout(dayIndex);
     const readiness = calculateReadiness();
-    const easy = Boolean(state.easyDays[dayIndex]);
+    const easy = Boolean(state.easyDays[weekDateKey(dayIndex)] || state.easyDays[dayIndex]);
+    const loggedActivity = state.activityLog[weekDateKey(dayIndex)];
+    let result;
 
     if (base.kind === "rest") {
-      return { ...base, note: "Il riposo non viene trasformato automaticamente in allenamento per recuperare sedute saltate." };
-    }
-    if (base.kind === "recovery") {
-      return { ...base, note: "Mantieni questa giornata facile anche se ti senti bene: prepara la seduta successiva." };
-    }
-    if (readiness.mode === "recovery" || easy) {
-      return {
+      result = { ...base, note: "Il riposo non viene trasformato automaticamente in allenamento per recuperare sedute saltate." };
+    } else if (base.kind === "recovery") {
+      result = { ...base, note: "Mantieni questa giornata facile anche se ti senti bene: prepara la seduta successiva." };
+    } else if (readiness.mode === "recovery" || easy) {
+      result = {
         short: "Recupero attivo",
         kind: "recovery",
         duration: "20–30 min",
@@ -339,8 +507,7 @@
           ["Mobilità generale", "8–10 min", "Movimenti senza dolore"]
         ]
       };
-    }
-    if (readiness.mode === "reduced") {
+    } else if (readiness.mode === "reduced") {
       if (base.kind === "strength" || base.kind === "bodyweight") {
         base.duration = base.duration.replace("45", "35").replace("40", "35");
         base.effort = "RPE 6";
@@ -362,10 +529,12 @@
         base.note = "Accorcia la corsa e mantieni sempre un ritmo conversazionale.";
         base.exercises = base.exercises.map(([name, dose, cue]) => [name, reduceDose(dose), cue]);
       }
-      return base;
+      result = base;
+    } else {
+      base.note = "Recupero buono: programma completo, lasciando comunque due ripetizioni in riserva.";
+      result = base;
     }
-    base.note = "Recupero buono: programma completo, lasciando comunque due ripetizioni in riserva.";
-    return base;
+    return applyLoggedActivity(result, loggedActivity);
   }
 
   function navigate(route, updateHash = true) {
@@ -409,6 +578,19 @@
     document.getElementById("today-workout-effort").textContent = workout.effort;
     document.getElementById("today-workout-summary").textContent = workout.note;
 
+    const todayActivity = state.activityLog[weekDateKey(todayIndex)];
+    const activitySummary = document.getElementById("today-activity-summary");
+    activitySummary.hidden = !todayActivity;
+    activitySummary.innerHTML = todayActivity ? `
+      <div>
+        <p class="eyebrow">Attività considerata oggi</p>
+        <strong>${todayActivity.label}</strong>
+        <span>${todayActivity.duration} min · RPE ${todayActivity.rpe}</span>
+      </div>
+      <button class="text-button" type="button" id="edit-today-activity">Modifica</button>
+    ` : "";
+    document.getElementById("edit-today-activity")?.addEventListener("click", () => openActivityDialog(todayIndex));
+
     const syncButton = document.getElementById("quick-sync");
     syncButton.classList.toggle("has-data", !sourceIsDemo);
     document.getElementById("sync-label").textContent = sourceIsDemo ? "Dati demo" : `Aggiornato ${formatShortDate(h.date)}`;
@@ -427,14 +609,15 @@
     const strip = document.getElementById("week-strip");
     strip.innerHTML = "";
     baseWeek.forEach((day, index) => {
-      const scheduled = scheduledDay(index);
+      const scheduled = plannedWorkout(index);
+      const activity = state.activityLog[weekDateKey(index)];
       const button = document.createElement("button");
       button.type = "button";
       button.className = "day-button";
       if (index === state.selectedDay) button.classList.add("is-selected");
-      if (state.completedDays[index]) button.classList.add("is-complete");
+      if (state.completedDates[weekDateKey(index)] || activity) button.classList.add("is-complete");
       button.setAttribute("aria-pressed", String(index === state.selectedDay));
-      button.innerHTML = `<strong>${shortDayNames[index]}</strong><span>${scheduled.short}</span><small>${scheduled.duration}</small>`;
+      button.innerHTML = `<strong>${shortDayNames[index]}</strong><span>${activity ? activity.label : scheduled.short}</span><small>${activity ? `${activity.duration} min` : scheduled.duration}</small>`;
       button.addEventListener("click", () => {
         state.selectedDay = index;
         saveState();
@@ -455,8 +638,8 @@
       </div>
     `).join("");
     const completeButton = document.getElementById("complete-workout");
-    const complete = Boolean(state.completedDays[state.selectedDay]);
-    completeButton.textContent = complete ? "Completato" : "Segna come completato";
+    const complete = Boolean(state.completedDates[weekDateKey(state.selectedDay)] || state.activityLog[weekDateKey(state.selectedDay)]);
+    completeButton.textContent = complete ? "Attività registrata" : "Segna come completato";
     completeButton.disabled = complete;
   }
 
@@ -470,8 +653,8 @@
     }, { kcal: 0, protein: 0 });
   }
 
-  function planTotals() {
-    return state.meals.reduce((total, meal) => {
+  function planTotals(meals = mealsForDay()) {
+    return meals.reduce((total, meal) => {
       const mealTotal = mealTotals(meal);
       total.kcal += mealTotal.kcal;
       total.protein += mealTotal.protein;
@@ -479,9 +662,76 @@
     }, { kcal: 0, protein: 0 });
   }
 
+  function weeklyAverageTotals() {
+    const totals = state.weeklyMeals.map((meals) => planTotals(meals));
+    return {
+      kcal: Math.round(average(totals.map((item) => item.kcal))),
+      protein: Math.round(average(totals.map((item) => item.protein)))
+    };
+  }
+
+  function renderMealWeekStrip() {
+    const strip = document.getElementById("meal-week-strip");
+    strip.innerHTML = state.weeklyMeals.map((meals, index) => {
+      const totals = planTotals(meals);
+      return `
+        <button class="meal-day-button ${index === state.selectedMealDay ? "is-selected" : ""}" type="button" data-meal-day="${index}" aria-pressed="${index === state.selectedMealDay}">
+          <strong>${shortDayNames[index]}</strong>
+          <small>${totals.kcal} kcal</small>
+        </button>
+      `;
+    }).join("");
+    strip.querySelectorAll("[data-meal-day]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.selectedMealDay = Number(button.dataset.mealDay);
+        saveState();
+        renderMeals();
+      });
+    });
+  }
+
+  function renderGroceryList() {
+    const counts = new Map();
+    state.weeklyMeals.flat().forEach((meal) => {
+      meal.slots.forEach((foodId) => {
+        const food = foodById.get(foodId);
+        if (!food) return;
+        const current = counts.get(foodId) || { food, count: 0 };
+        current.count += 1;
+        counts.set(foodId, current);
+      });
+    });
+    const groupLabels = {
+      "dairy-protein": "Colazioni proteiche",
+      "breakfast-carb": "Cereali e pane da colazione",
+      "main-protein": "Carne, pesce, uova e alternative",
+      "main-carb": "Riso, pasta, pane e patate",
+      "snack-protein": "Proteine per spuntini",
+      "snack-carb": "Carboidrati per spuntini",
+      "plant-side": "Verdure e legumi",
+      fruit: "Frutta",
+      fat: "Condimenti e frutta secca"
+    };
+    const groupOrder = ["main-protein", "dairy-protein", "snack-protein", "main-carb", "breakfast-carb", "snack-carb", "plant-side", "fruit", "fat"];
+    document.getElementById("grocery-list").innerHTML = groupOrder.map((group) => {
+      const items = [...counts.values()].filter(({ food }) => food.group === group);
+      if (!items.length) return "";
+      return `
+        <section class="grocery-group">
+          <h3>${groupLabels[group]}</h3>
+          ${items.map(({ food, count }) => `
+            <div class="grocery-row"><strong>${food.name}</strong><span>${count} × ${food.portion}</span></div>
+          `).join("")}
+        </section>
+      `;
+    }).join("");
+  }
+
   function renderMeals() {
     const container = document.getElementById("meal-plan");
-    container.innerHTML = state.meals.map((meal, mealIndex) => {
+    const meals = mealsForDay();
+    renderMealWeekStrip();
+    container.innerHTML = meals.map((meal, mealIndex) => {
       const totals = mealTotals(meal);
       const rows = meal.slots.map((foodId, slotIndex) => {
         const food = foodById.get(foodId);
@@ -524,13 +774,17 @@
       button.addEventListener("click", () => dislikeAndReplace(mealIndex, slotIndex));
     });
 
-    const totals = planTotals();
-    document.getElementById("plan-calories").textContent = `≈ ${totals.kcal} kcal`;
+    const totals = planTotals(meals);
+    const weeklyAverage = weeklyAverageTotals();
+    document.getElementById("meal-day-title").textContent = dayNames[state.selectedMealDay];
+    document.getElementById("meal-day-total").textContent = `${totals.kcal} kcal · ${totals.protein} g proteine`;
+    document.getElementById("plan-calories").textContent = `≈ ${weeklyAverage.kcal} kcal`;
     const historyDays = new Set(state.healthHistory.map((entry) => entry.date)).size;
     document.getElementById("nutrition-summary").textContent = historyDays >= 14
       ? nutritionCalibrationText()
-      : `Piano di partenza ≈ ${totals.kcal} kcal. Servono ancora ${Math.max(0, 14 - historyDays)} giorni di peso e attività per calibrare le porzioni.`;
+      : `Media settimanale ≈ ${weeklyAverage.kcal} kcal al giorno. Servono ancora ${Math.max(0, 14 - historyDays)} giorni di peso e attività per calibrare le porzioni.`;
     document.getElementById("plant-step-label").textContent = state.plantTrial ? "1 scelta" : "1 prova";
+    renderGroceryList();
   }
 
   function nutritionCalibrationText() {
@@ -569,10 +823,11 @@
   }
 
   function openSwap(mealIndex, slotIndex) {
-    const currentId = state.meals[mealIndex].slots[slotIndex];
+    const meals = mealsForDay();
+    const currentId = meals[mealIndex].slots[slotIndex];
     const current = foodById.get(currentId);
     if (!current) return;
-    currentSwap = { mealIndex, slotIndex, currentId };
+    currentSwap = { dayIndex: state.selectedMealDay, mealIndex, slotIndex, currentId };
     document.getElementById("swap-description").textContent = `Alternative a ${current.name}, ordinate usando equivalenza nutrizionale e preferenze apprese.`;
     const options = candidateFoods(current.group, currentId).slice(0, 6);
     document.getElementById("swap-options").innerHTML = options.map((food) => `
@@ -589,8 +844,8 @@
 
   function chooseFood(foodId) {
     if (!currentSwap || !foodById.has(foodId)) return;
-    const { mealIndex, slotIndex, currentId } = currentSwap;
-    state.meals[mealIndex].slots[slotIndex] = foodId;
+    const { dayIndex, mealIndex, slotIndex, currentId } = currentSwap;
+    state.weeklyMeals[dayIndex][mealIndex].slots[slotIndex] = foodId;
     state.preferenceScores[currentId] = Number(state.preferenceScores[currentId] || 0) - 1;
     state.preferenceScores[foodId] = Number(state.preferenceScores[foodId] || 0) + 0.5;
     saveState();
@@ -608,15 +863,80 @@
   }
 
   function dislikeAndReplace(mealIndex, slotIndex) {
-    const currentId = state.meals[mealIndex].slots[slotIndex];
+    const meals = mealsForDay();
+    const currentId = meals[mealIndex].slots[slotIndex];
     const current = foodById.get(currentId);
     if (!current) return;
     state.preferenceScores[currentId] = clamp(Number(state.preferenceScores[currentId] || 0) - 3, -6, 6);
     const replacement = candidateFoods(current.group, currentId)[0];
-    if (replacement) state.meals[mealIndex].slots[slotIndex] = replacement.id;
+    if (replacement) meals[mealIndex].slots[slotIndex] = replacement.id;
     saveState();
     renderAll();
     showToast(replacement ? `${current.name} evitato. Provo ${replacement.name}.` : `${current.name} segnato come non gradito.`);
+  }
+
+  function openWorkoutChoice(dayIndex) {
+    workoutTargetDay = dayIndex;
+    const current = plannedWorkout(dayIndex);
+    document.getElementById("workout-choice-description").textContent = `Al posto di ${current.short}, scegli ciò che puoi fare. Forma applicherà comunque le regole di recupero della giornata.`;
+    document.getElementById("workout-choice-options").innerHTML = workoutAlternatives.map((option) => `
+      <button class="swap-option" type="button" data-workout-choice="${option.id}">
+        <span><strong>${option.short}</strong><br><small>${option.duration}</small></span>
+        <small>${option.effort}</small>
+      </button>
+    `).join("");
+    document.querySelectorAll("[data-workout-choice]").forEach((button) => {
+      button.addEventListener("click", () => chooseWorkoutAlternative(button.dataset.workoutChoice));
+    });
+    document.getElementById("restore-workout").hidden = !state.workoutOverrides[weekDateKey(dayIndex)];
+    document.getElementById("workout-choice-dialog").showModal();
+  }
+
+  function chooseWorkoutAlternative(optionId) {
+    if (workoutTargetDay === null) return;
+    const option = workoutAlternatives.find((item) => item.id === optionId);
+    if (!option) return;
+    state.workoutOverrides[weekDateKey(workoutTargetDay)] = clone(option);
+    state.selectedDay = workoutTargetDay;
+    delete state.easyDays[workoutTargetDay];
+    delete state.easyDays[weekDateKey(workoutTargetDay)];
+    saveState();
+    document.getElementById("workout-choice-dialog").close();
+    renderAll();
+    showToast(`${option.short} inserito al posto dell’allenamento previsto.`);
+  }
+
+  function restoreWorkout(dayIndex) {
+    delete state.workoutOverrides[weekDateKey(dayIndex)];
+    saveState();
+    document.getElementById("workout-choice-dialog").close();
+    renderAll();
+    showToast("Programma originale ripristinato.");
+  }
+
+  function activityLabel(type) {
+    return {
+      gym: "Palestra",
+      bodyweight: "Corpo libero",
+      run: "Corsa",
+      walk: "Camminata",
+      basket: "Basket",
+      other: "Altro sport"
+    }[type] || "Attività personale";
+  }
+
+  function openActivityDialog(dayIndex) {
+    activityTargetDay = dayIndex;
+    const form = document.getElementById("activity-form");
+    const existing = state.activityLog[weekDateKey(dayIndex)];
+    form.reset();
+    form.elements.activityType.value = existing?.type || "bodyweight";
+    form.elements.duration.value = existing?.duration || 30;
+    form.elements.rpe.value = existing?.rpe || 6;
+    document.getElementById("activity-rpe-output").textContent = `${form.elements.rpe.value}/10`;
+    document.getElementById("remove-activity").hidden = !existing;
+    document.getElementById("activity-message").textContent = "";
+    document.getElementById("activity-dialog").showModal();
   }
 
   function renderPreferences() {
@@ -665,12 +985,13 @@
     const food = foodById.get(foodId);
     if (!food) return;
     state.plantTrial = foodId;
+    const meals = mealsForDay();
     if (food.group === "plant-side") {
-      const lunch = state.meals.find((meal) => meal.id === "lunch");
+      const lunch = meals.find((meal) => meal.id === "lunch");
       const slot = lunch.slots.findIndex((id) => foodById.get(id)?.group === "plant-side");
       if (slot >= 0) lunch.slots[slot] = foodId;
     } else if (food.group === "fruit") {
-      const breakfast = state.meals.find((meal) => meal.id === "breakfast");
+      const breakfast = meals.find((meal) => meal.id === "breakfast");
       const slot = breakfast.slots.findIndex((id) => foodById.get(id)?.group === "fruit");
       if (slot >= 0) breakfast.slots[slot] = foodId;
       else breakfast.slots.push(foodId);
@@ -792,22 +1113,78 @@
 
     document.getElementById("today-downgrade").addEventListener("click", () => {
       const todayIndex = getMondayIndex();
-      state.easyDays[todayIndex] = true;
+      state.easyDays[weekDateKey(todayIndex)] = true;
       state.selectedDay = todayIndex;
       saveState();
       renderAll();
       showToast("Oggi passa a recupero attivo. Nessun senso di colpa: è parte del piano.");
     });
 
+    document.getElementById("today-change-workout").addEventListener("click", () => openWorkoutChoice(getMondayIndex()));
+    document.getElementById("today-log-activity").addEventListener("click", () => openActivityDialog(getMondayIndex()));
+    document.getElementById("change-workout").addEventListener("click", () => openWorkoutChoice(state.selectedDay));
+    document.getElementById("log-activity").addEventListener("click", () => openActivityDialog(state.selectedDay));
+    document.getElementById("close-workout-choice").addEventListener("click", () => document.getElementById("workout-choice-dialog").close());
+    document.getElementById("restore-workout").addEventListener("click", () => {
+      if (workoutTargetDay !== null) restoreWorkout(workoutTargetDay);
+    });
+    document.getElementById("close-activity").addEventListener("click", () => document.getElementById("activity-dialog").close());
+    document.getElementById("activity-rpe").addEventListener("input", (event) => {
+      document.getElementById("activity-rpe-output").textContent = `${event.target.value}/10`;
+    });
+
+    document.getElementById("activity-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (activityTargetDay === null) return;
+      const data = new FormData(event.currentTarget);
+      const type = String(data.get("activityType"));
+      const duration = Number(data.get("duration"));
+      const rpe = Number(data.get("rpe"));
+      if (!Number.isFinite(duration) || duration < 5 || duration > 240 || !Number.isFinite(rpe) || rpe < 1 || rpe > 10) {
+        document.getElementById("activity-message").textContent = "Controlla durata e intensità.";
+        return;
+      }
+      const key = weekDateKey(activityTargetDay);
+      state.activityLog[key] = { type, label: activityLabel(type), duration, rpe, recordedAt: new Date().toISOString() };
+      state.completedDates[key] = true;
+      state.selectedDay = activityTargetDay;
+      saveState();
+      document.getElementById("activity-dialog").close();
+      renderAll();
+      showToast("Attività registrata e programma della giornata ricalcolato.");
+    });
+
+    document.getElementById("remove-activity").addEventListener("click", () => {
+      if (activityTargetDay === null) return;
+      const key = weekDateKey(activityTargetDay);
+      delete state.activityLog[key];
+      delete state.completedDates[key];
+      delete state.completedDays[activityTargetDay];
+      saveState();
+      document.getElementById("activity-dialog").close();
+      renderAll();
+      showToast("Attività registrata rimossa.");
+    });
+
     document.getElementById("make-easier").addEventListener("click", () => {
-      state.easyDays[state.selectedDay] = true;
+      state.easyDays[weekDateKey(state.selectedDay)] = true;
       saveState();
       renderAll();
       showToast("Seduta alleggerita.");
     });
 
     document.getElementById("complete-workout").addEventListener("click", () => {
-      state.completedDays[state.selectedDay] = true;
+      const key = weekDateKey(state.selectedDay);
+      const workout = plannedWorkout(state.selectedDay);
+      state.completedDates[key] = true;
+      state.activityLog[key] = {
+        type: workout.kind,
+        label: workout.short,
+        duration: parseMinutes(workout.duration),
+        rpe: parseRpe(workout.effort),
+        planned: true,
+        recordedAt: new Date().toISOString()
+      };
       saveState();
       renderAll();
       showToast("Allenamento registrato.");
@@ -820,7 +1197,7 @@
     document.getElementById("reset-preferences").addEventListener("click", () => {
       if (!window.confirm("Vuoi davvero azzerare ciò che l’app ha imparato sui tuoi gusti?")) return;
       state.preferenceScores = clone(defaultState.preferenceScores);
-      state.meals = clone(defaultState.meals);
+      state.weeklyMeals = clone(defaultState.weeklyMeals);
       state.plantTrial = null;
       saveState();
       renderAll();
@@ -891,6 +1268,7 @@
 
   function init() {
     state.selectedDay = Number.isInteger(state.selectedDay) ? state.selectedDay : getMondayIndex();
+    state.selectedMealDay = Number.isInteger(state.selectedMealDay) ? state.selectedMealDay : getMondayIndex();
     bindEvents();
     renderAll();
     navigate(location.hash.slice(1) || "oggi", false);
