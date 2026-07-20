@@ -560,6 +560,14 @@
     });
     if (updateHash && location.hash !== `#${safeRoute}`) history.replaceState(null, "", `#${safeRoute}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    requestAnimationFrame(() => {
+      const strip = safeRoute === "allenamento"
+        ? document.getElementById("week-strip")
+        : safeRoute === "alimentazione"
+          ? document.getElementById("meal-week-strip")
+          : null;
+      strip?.querySelector(".is-selected")?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    });
   }
 
   function renderToday() {
@@ -573,6 +581,9 @@
     document.getElementById("readiness-score").textContent = readiness.score;
     document.getElementById("score-ring").style.setProperty("--score", readiness.score);
     document.getElementById("score-ring").setAttribute("aria-label", `Recupero ${readiness.score} su 100`);
+    document.getElementById("score-ring").dataset.level = readiness.mode;
+    document.getElementById("readiness-card").dataset.level = readiness.mode;
+    document.getElementById("readiness-status").dataset.level = readiness.mode;
     document.getElementById("readiness-status").textContent = readiness.status;
     document.getElementById("readiness-title").textContent = readiness.title;
     document.getElementById("readiness-explanation").textContent = readiness.explanation;

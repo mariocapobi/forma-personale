@@ -1,14 +1,14 @@
-const CACHE_NAME = "forma-personale-v5";
+const CACHE_NAME = "forma-personale-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=5",
-  "./app.js?v=5",
+  "./styles.css?v=7",
+  "./app.js?v=7",
   "./manifest.webmanifest",
   "./forma-health-esempio.json",
-  "./icons/icon.svg",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/logo-forma-v2.svg",
+  "./icons/logo-forma-v2-192.png",
+  "./icons/logo-forma-v2-512.png"
 ];
 
 self.addEventListener("install", (event) => {

@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#12372a">
+  <meta name="theme-color" content="#0e3024">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Forma">
   <meta name="description" content="Piano personale adattivo per allenamento, recupero e alimentazione.">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="apple-touch-icon" href="icons/logo-forma-v2-192.png">
+  <link rel="icon" href="icons/logo-forma-v2.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=7">
   <title>Forma</title>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Vai al contenuto</a>
   <header class="app-header">
     <a class="brand" href="#oggi" data-route-link="oggi" aria-label="Forma, pagina Oggi">
-      <span class="brand-mark" aria-hidden="true">F</span>
-      <span>Forma</span>
+      <span class="brand-mark" aria-hidden="true"><img src="icons/logo-forma-v2.svg" alt=""></span>
+      <span class="brand-copy"><strong>Forma</strong><small>Il tuo equilibrio, ogni giorno</small></span>
     </a>
     <button class="sync-button" id="quick-sync" type="button">
       <span class="sync-dot" aria-hidden="true"></span>
@@ -37,7 +37,7 @@
         <span class="status-pill" id="readiness-status">Moderato</span>
       </div>
 
-      <article class="readiness-card">
+      <article class="readiness-card" id="readiness-card">
         <div class="score-ring" id="score-ring" style="--score:72" role="img" aria-label="Recupero 72 su 100">
           <strong id="readiness-score">72</strong>
           <span>/100</span>
@@ -51,17 +51,17 @@
       </article>
 
       <div class="metric-grid" aria-label="Indicatori del giorno">
-        <article class="metric-card">
+        <article class="metric-card metric-sleep">
           <span>Sonno</span>
           <strong id="metric-sleep">6 h 50</strong>
           <small id="metric-sleep-note">media 7 h 30</small>
         </article>
-        <article class="metric-card">
+        <article class="metric-card metric-hrv">
           <span>HRV</span>
           <strong id="metric-hrv">52 ms</strong>
           <small id="metric-hrv-note">nella tua norma</small>
         </article>
-        <article class="metric-card">
+        <article class="metric-card metric-energy">
           <span>Energia</span>
           <strong id="metric-energy">7/10</strong>
           <small id="metric-energy-note">check-in manuale</small>
@@ -296,11 +296,11 @@
   </main>
 
   <nav class="bottom-nav" aria-label="Navigazione principale">
-    <button class="nav-item is-active" type="button" data-route-link="oggi" aria-current="page"><span aria-hidden="true">●</span><span>Oggi</span></button>
-    <button class="nav-item" type="button" data-route-link="allenamento"><span aria-hidden="true">◆</span><span>Allenamento</span></button>
-    <button class="nav-item" type="button" data-route-link="alimentazione"><span aria-hidden="true">◒</span><span>Alimenti</span></button>
-    <button class="nav-item" type="button" data-route-link="preferenze"><span aria-hidden="true">♥</span><span>Gusti</span></button>
-    <button class="nav-item" type="button" data-route-link="dati"><span aria-hidden="true">↻</span><span>Dati</span></button>
+    <button class="nav-item is-active" type="button" data-route-link="oggi" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.5 10.2V20h13v-9.8M9.2 20v-5.6h5.6V20"/></svg></span><span>Oggi</span></button>
+    <button class="nav-item" type="button" data-route-link="allenamento"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 8v8M3.5 9.5v5M17.5 8v8M20.5 9.5v5M6.5 12h11"/></svg></span><span>Allenamento</span></button>
+    <button class="nav-item" type="button" data-route-link="alimentazione"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7.2c-2.6-3-7.4-1.5-7.4 3.2 0 4.6 3.4 8.9 7.4 9.6 4-.7 7.4-5 7.4-9.6 0-4.7-4.8-6.2-7.4-3.2Z"/><path d="M12 7.2c.2-2.1 1.3-3.4 3.5-4"/></svg></span><span>Alimenti</span></button>
+    <button class="nav-item" type="button" data-route-link="preferenze"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 8.8c0 5.3-8.8 10.2-8.8 10.2S3.2 14.1 3.2 8.8A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8.8 1.8Z"/></svg></span><span>Gusti</span></button>
+    <button class="nav-item" type="button" data-route-link="dati"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M19.1 12A7.2 7.2 0 1 0 17 17.1"/></svg></span><span>Dati</span></button>
   </nav>
 
   <dialog class="swap-dialog setup-dialog" id="setup-dialog" aria-labelledby="setup-title">
@@ -411,6 +411,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=5" defer></script>
+  <script src="app.js?v=7" defer></script>
 </body>
 </html>
