@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Forma</title>
+  <desc id="desc">Una F composta da due foglie con un battito centrale.</desc>
+  <rect width="512" height="512" fill="#f6f3ec"/>
+  <path fill="#0e3024" d="M124 274v-91c0-65 53-101 118-101h94c38 0 71-5 94-18-3 59-25 102-62 127-33 22-66 27-115 25-56-2-97 20-129 58Z"/>
+  <path fill="#5ed3a3" d="M119 438c1-87 6-144 54-184 30-26 65-32 108-32 42 0 75-7 108-25-8 62-36 110-78 136-27 17-53 21-83 28-4 49-25 87-60 109-17 10-34 16-49 18Z"/>
+  <path d="M139 429c13-74 34-116 72-141" fill="none" stroke="#f6f3ec" stroke-width="14" stroke-linecap="round"/>
+  <path d="M147 235c30-18 58-20 86-18l22-27 16 39c39 2 72-3 103-15" fill="none" stroke="#ff7a66" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
